@@ -4,7 +4,11 @@ RUN apt-get update && apt-get install -y sqlite3 && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /var/www/html
 
-COPY ./config.php ./db_setup.sql ./classes ./app ./index.php /var/www/html/
+COPY ./config.php /var/www/html/config.php
+COPY ./db_setup.sql /var/www/html/db_setup.sql
+COPY ./index.php /var/www/html/index.php
+COPY ./classes /var/www/html/classes
+COPY ./app /var/www/html/app
 
 RUN php -r " \
     \$db = new PDO('sqlite:/var/www/html/app.db'); \
