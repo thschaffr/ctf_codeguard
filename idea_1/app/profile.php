@@ -7,7 +7,46 @@ $id = (int)($_GET['id'] ?? $_SESSION['user_id']);  // IDOR vulnerability
 $sql = "SELECT * FROM users WHERE id = $id;";
 $row = $db->query($sql)->fetch();
 if (!$row) { die("No user."); }
-echo "<h2>Profile of {$row['username']}</h2>";
-echo "ID: {$row['id']}<br>";
-echo "Flag: {$row['flag']}<br>";
-echo "<p><a href=\"upload.php\">Upload / Trigger Deserialization</a></p>";
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile | Vulnerable App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-shell">
+        <header class="app-header">
+            <h1>User Profile</h1>
+            <nav class="app-nav">
+                <a href="index.php">Home</a>
+                <a href="profile.php">Profile</a>
+                <a href="upload.php">Upload</a>
+            </nav>
+        </header>
+
+        <div class="card stack">
+            <div>
+                <h2>Profile of <?php echo htmlspecialchars($row['username'], ENT_QUOTES, 'UTF-8'); ?></h2>
+                <p class="muted">Inspect IDs to observe insecure direct object references.</p>
+            </div>
+            <div class="card">
+                <p><strong>User ID:</strong> <span class="highlight"><?php echo $row['id']; ?></span></p>
+                <p><strong>Flag:</strong> <span class="highlight"><?php echo htmlspecialchars($row['flag'], ENT_QUOTES, 'UTF-8'); ?></span></p>
+            </div>
+            <div class="card">
+                <h3>Try This</h3>
+                <p class="muted">
+                    Adjust the <code class="highlight">?id=</code> parameter in the URL to fetch other profiles.
+                    Session validation does not prevent cross-user access.
+                </p>
+            </div>
+            <button onclick="window.location.href='upload.php'">Go to Deserialization Challenge</button>
+        </div>
+
+        <p class="footer-note">Security lesson: enforce access control on every request.</p>
+    </div>
+</body>
+</html>
