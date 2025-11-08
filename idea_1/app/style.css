@@ -200,6 +200,31 @@ button:hover {
     gap: 22px;
 }
 
+.exec-output {
+    margin-top: 14px;
+    padding: 18px 20px;
+    border-radius: var(--radius-small);
+    background: rgba(0, 60, 96, 0.08);
+    border: 1px solid rgba(0, 60, 96, 0.18);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.exec-output h3 {
+    margin: 0 0 10px;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--headline);
+}
+
+.exec-output pre {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #002a3a;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
 .footer-note {
     text-align: center;
     margin-top: 28px;

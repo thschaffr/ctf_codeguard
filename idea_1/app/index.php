@@ -31,7 +31,7 @@
                 <p class="muted">
                     <span class="highlight">SQL Injection</span>,
                     <span class="highlight">IDOR</span>,
-                    <span class="highlight">Unsafe Deserialization</span>
+                    <span class="highlight">Remote Code Execution</span>
                 </p>
             </div>
             <button onclick="window.location.href='login.php'">Enter Training Portal</button>

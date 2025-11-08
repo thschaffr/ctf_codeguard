@@ -4,15 +4,20 @@ require_once "../classes/Deserializable.php";
 
 $decoded = null;
 $objectDump = null;
+$commandOutput = null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = $_POST['data'];
-    // Unsafe deserialization vulnerability
+    // Remote code execution via unsafe deserialization
     $decoded = base64_decode($data);
+    Deserializable::$lastOutput = null;
     $obj = unserialize($decoded);
     ob_start();
     var_dump($obj);
     $objectDump = ob_get_clean();
+    if (Deserializable::$lastOutput !== null) {
+        $commandOutput = Deserializable::$lastOutput;
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -26,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="app-shell">
         <header class="app-header">
-            <h1>Unsafe Deserialization Lab</h1>
+            <h1>Remote Code Execution Lab</h1>
             <nav class="app-nav">
                 <a href="index.php">Overview</a>
                 <a href="profile.php">Portal</a>
@@ -38,8 +43,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div>
                 <h2>Craft a Payload</h2>
                 <p class="muted">
-                    Paste a base64-encoded PHP serialized object. If the object contains a <code class="highlight">$cmd</code>
-                    property, the application will execute it during <code class="highlight">__wakeup()</code>.
+                    Send a base64-encoded PHP serialized object implementing <code class="highlight">Deserializable</code>.
+                    Any value placed in the <code class="highlight">$cmd</code> property executes on the host during
+                    <code class="highlight">__wakeup()</code>, and the output is captured below. Try enumerating
+                    <code class="highlight">/var/www/html/app.db</code> to retrieve stored secrets.
                 </p>
             </div>
 
@@ -55,6 +62,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="card">
                     <h3>Decoded Payload (raw)</h3>
                     <pre class="muted"><?php echo htmlspecialchars($decoded, ENT_QUOTES, 'UTF-8'); ?></pre>
+                </div>
+            <?php endif; ?>
+
+            <?php if ($commandOutput !== null): ?>
+                <div class="exec-output">
+                    <h3>Command Output</h3>
+                    <pre><?php echo htmlspecialchars($commandOutput, ENT_QUOTES, 'UTF-8'); ?></pre>
                 </div>
             <?php endif; ?>
 
