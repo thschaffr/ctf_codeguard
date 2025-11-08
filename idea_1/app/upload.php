@@ -1,7 +1,13 @@
 <?php
 require_once "../config.php";
 
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
 $uploadMessage = null;
+$uploadSuccess = false;
 $uploadedFile = null;
 $uploadErrorDetail = null;
 
@@ -28,17 +34,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
         // Intentionally insecure: no validation on file type or content
         $uploadDir = dirname(__DIR__) . '/uploads/';
         if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0775, true);
+            if (!mkdir($uploadDir, 0777, true)) {
+                $uploadMessage = "Upload failed.";
+                $uploadErrorDetail = "Unable to create upload directory.";
+            }
+        }
+
+        if ($uploadErrorDetail === null && !is_writable($uploadDir)) {
+            @chmod($uploadDir, 0777);
         }
 
         $targetPath = $uploadDir . basename($file['name']);
 
-        if (@move_uploaded_file($file['tmp_name'], $targetPath)) {
+        if ($uploadErrorDetail === null && @move_uploaded_file($file['tmp_name'], $targetPath)) {
             $uploadMessage = "File uploaded successfully.";
             $uploadedFile = basename($file['name']);
+            $uploadSuccess = true;
         } else {
             $uploadMessage = "Upload failed.";
-            $uploadErrorDetail = "Unable to move uploaded file. Check directory permissions.";
+            if ($uploadErrorDetail === null) {
+                $uploadErrorDetail = "Unable to move uploaded file. Check directory permissions.";
+            }
         }
     }
 }
@@ -71,9 +87,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
             </div>
 
             <?php if ($uploadMessage): ?>
-                <div class="alert">
+                <?php $alertClass = $uploadSuccess ? 'alert-success' : 'alert'; ?>
+                <div class="<?php echo $alertClass; ?>">
                     <?php echo htmlspecialchars($uploadMessage, ENT_QUOTES, 'UTF-8'); ?>
-                    <?php if ($uploadErrorDetail): ?>
+                    <?php if (!$uploadSuccess && $uploadErrorDetail): ?>
                         <br><span class="muted"><?php echo htmlspecialchars($uploadErrorDetail, ENT_QUOTES, 'UTF-8'); ?></span>
                     <?php endif; ?>
                 </div>
