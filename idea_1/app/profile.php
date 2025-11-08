@@ -29,24 +29,20 @@ if (!$row) { die("No user."); }
 
         <div class="card stack">
             <div>
-                <h2>Profile of <?php echo htmlspecialchars($row['username'], ENT_QUOTES, 'UTF-8'); ?></h2>
-                <p class="muted">Inspect IDs to observe insecure direct object references.</p>
+                <h2><?php echo htmlspecialchars($row['username'], ENT_QUOTES, 'UTF-8'); ?></h2>
+                <p class="muted">
+                    Session context is active. Review network activity to understand how profile data is fetched.
+                </p>
             </div>
             <div class="card">
                 <p><strong>User ID:</strong> <span class="highlight"><?php echo $row['id']; ?></span></p>
                 <p><strong>Flag:</strong> <span class="highlight"><?php echo htmlspecialchars($row['flag'], ENT_QUOTES, 'UTF-8'); ?></span></p>
             </div>
-            <div class="card">
-                <h3>Try This</h3>
-                <p class="muted">
-                    Adjust the <code class="highlight">?id=</code> parameter in the URL to fetch other profiles.
-                    Session validation does not prevent cross-user access.
-                </p>
-            </div>
-            <button onclick="window.location.href='upload.php'">Go to Deserialization Challenge</button>
+            <button onclick="window.location.href='upload.php'">Explore Upload Lab</button>
         </div>
 
         <p class="footer-note">Security lesson: enforce access control on every request.</p>
     </div>
+    <!-- Analyst note: the profile endpoint trusts any ?id= parameter. -->
 </body>
 </html>

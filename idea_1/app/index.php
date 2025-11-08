@@ -12,30 +12,32 @@
         <header class="app-header">
             <h1>Vulnerable App Playground</h1>
             <nav class="app-nav">
-                <a href="index.php">Home</a>
-                <a href="login.php">Login</a>
-                <a href="upload.php">Upload</a>
+                <a href="index.php">Overview</a>
+                <a href="login.php">Portal</a>
+                <a href="upload.php">Labs</a>
             </nav>
         </header>
 
         <div class="card stack">
-            <h2>Practice Real-World Exploits</h2>
-            <p class="muted">
-                This intentionally vulnerable PHP application is designed for CTF exercises and security training.
-                Use it to explore common web vulnerabilities in a safe, isolated environment.
-            </p>
-            <div class="card">
-                <h3>Available Challenges</h3>
-                <ul class="muted">
-                    <li><span class="highlight">SQL Injection</span> &mdash; Bypass the login form</li>
-                    <li><span class="highlight">IDOR</span> &mdash; Access another user&rsquo;s profile</li>
-                    <li><span class="highlight">Unsafe Deserialization</span> &mdash; Trigger command execution</li>
-                </ul>
+            <div>
+                <h2>Security Labs in a Single Stack</h2>
+                <p class="muted">
+                    A polished training environment built with classic vulnerabilities. Inspect the flows, observe the responses,
+                    and document the impact. Every screen keeps the original behaviors intact.
+                </p>
             </div>
-            <button onclick="window.location.href='login.php'">Start with Login</button>
+            <div class="card">
+                <h3>Included Scenarios</h3>
+                <p class="muted">
+                    <span class="highlight">SQL Injection</span>,
+                    <span class="highlight">IDOR</span>,
+                    <span class="highlight">Unsafe Deserialization</span>
+                </p>
+            </div>
+            <button onclick="window.location.href='login.php'">Open the Portal</button>
         </div>
 
-        <p class="footer-note">For training use only. Do not deploy in production.</p>
+        <p class="footer-note">For controlled environments only. Crafted to mirror a modern product experience.</p>
     </div>
 </body>
 </html>

@@ -35,8 +35,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </header>
 
         <div class="card">
-            <h2>Enter Credentials</h2>
-            <p class="muted">Use the provided demo accounts or explore injection payloads.</p>
+            <h2>Sign In</h2>
+            <p class="muted">
+                Authenticate to reach the dashboard. Audit the request flow to understand how the portal behaves.
+            </p>
 
             <?php if ($error): ?>
                 <div class="alert"><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></div>
@@ -45,13 +47,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <form method="post" class="stack">
                 <label>
                     Username
-                    <input name="user" placeholder="alice" required>
+                    <input name="user" placeholder="Enter username" autocomplete="username" required>
                 </label>
                 <label>
                     Password
-                    <input name="pass" type="password" placeholder="alicepass" required>
+                    <input name="pass" type="password" placeholder="Enter password" autocomplete="current-password" required>
                 </label>
-                <button type="submit">Sign In</button>
+                <button type="submit">Continue</button>
             </form>
         </div>
 

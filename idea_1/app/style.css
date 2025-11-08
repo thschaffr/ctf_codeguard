@@ -1,14 +1,18 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600&family=SF+Pro+Text:wght@400;500&display=swap");
 
 :root {
-    --bg-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-    --card-bg: rgba(255, 255, 255, 0.1);
-    --card-border: rgba(255, 255, 255, 0.2);
-    --text-color: #f8fbff;
-    --muted-text: rgba(248, 251, 255, 0.75);
-    --accent: #4dd0e1;
-    --accent-dark: #0097a7;
-    --danger: #ff6b6b;
+    --bg-gradient: linear-gradient(145deg, #f5f5f7, #e5e5ea);
+    --panel-bg: rgba(255, 255, 255, 0.85);
+    --panel-border: rgba(0, 0, 0, 0.04);
+    --text-color: #1d1d1f;
+    --muted-text: rgba(29, 29, 31, 0.64);
+    --accent: #007aff;
+    --accent-dark: #0051c6;
+    --danger: #ff3b30;
+    --shadow-soft: 0 26px 60px rgba(28, 32, 40, 0.14), 0 8px 24px rgba(28, 32, 40, 0.08);
+    --radius-large: 30px;
+    --radius-medium: 22px;
+    --radius-small: 14px;
 }
 
 * {
@@ -18,44 +22,49 @@
 body {
     margin: 0;
     min-height: 100vh;
-    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-family: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     background: var(--bg-gradient);
     color: var(--text-color);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 40px 20px;
+    padding: 54px 28px;
 }
 
 .app-shell {
-    width: min(720px, 100%);
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 18px;
-    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
-    backdrop-filter: blur(16px);
-    padding: 36px;
+    width: min(780px, 100%);
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius-large);
+    box-shadow: var(--shadow-soft);
+    backdrop-filter: blur(28px);
+    padding: 44px 48px;
 }
 
 .app-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 32px;
+    margin-bottom: 36px;
 }
 
 .app-header h1 {
     margin: 0;
-    font-size: 1.75rem;
-    letter-spacing: 0.02em;
+    font-size: 2.1rem;
+    letter-spacing: -0.035em;
+    font-family: "SF Pro Display", "SF Pro Text", -apple-system, sans-serif;
 }
 
 .app-nav a {
     color: var(--muted-text);
     text-decoration: none;
-    margin-left: 18px;
+    margin-left: 22px;
     font-weight: 500;
-    transition: color 0.2s ease;
+    transition: color 0.18s ease;
+}
+
+.app-nav a:first-child {
+    margin-left: 0;
 }
 
 .app-nav a:hover {
@@ -63,39 +72,41 @@ body {
 }
 
 .card {
-    background: rgba(15, 32, 39, 0.6);
-    border: 1px solid rgba(77, 208, 225, 0.2);
-    border-radius: 14px;
-    padding: 28px;
-    margin-bottom: 24px;
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: var(--radius-medium);
+    padding: 32px 34px;
+    box-shadow: 0 18px 38px rgba(15, 23, 42, 0.08);
 }
 
 .card h2 {
     margin-top: 0;
     font-weight: 600;
-    letter-spacing: 0.01em;
+    letter-spacing: -0.02em;
 }
 
 .muted {
     color: var(--muted-text);
-    font-size: 0.95rem;
+    font-size: 1rem;
+    line-height: 1.6;
 }
 
 form label {
     display: block;
-    margin-bottom: 14px;
+    margin-bottom: 18px;
     font-weight: 500;
 }
 
 input,
 textarea {
     width: 100%;
-    padding: 12px 14px;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    background: rgba(255, 255, 255, 0.08);
+    padding: 15px 18px;
+    border-radius: var(--radius-small);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: rgba(255, 255, 255, 0.96);
     color: var(--text-color);
-    font-size: 1rem;
+    font-size: 1.02rem;
+    font-family: inherit;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -103,7 +114,7 @@ input:focus,
 textarea:focus {
     outline: none;
     border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(77, 208, 225, 0.25);
+    box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.16);
 }
 
 button {
@@ -112,14 +123,15 @@ button {
     justify-content: center;
     gap: 10px;
     border: none;
-    border-radius: 12px;
-    padding: 12px 20px;
-    font-size: 1rem;
+    border-radius: 18px;
+    padding: 14px 28px;
+    font-size: 1.02rem;
     font-weight: 600;
     cursor: pointer;
-    color: #041923;
+    color: #fff;
     background: var(--accent);
     transition: background 0.2s ease, transform 0.2s ease;
+    box-shadow: 0 16px 30px rgba(0, 122, 255, 0.18);
 }
 
 button:hover {
@@ -128,33 +140,34 @@ button:hover {
 }
 
 .alert {
-    padding: 14px 18px;
-    border-radius: 10px;
-    background: rgba(255, 107, 107, 0.15);
-    border: 1px solid rgba(255, 107, 107, 0.5);
+    padding: 16px 20px;
+    border-radius: var(--radius-small);
+    background: rgba(255, 59, 48, 0.12);
+    border: 1px solid rgba(255, 59, 48, 0.24);
     color: var(--danger);
-    margin-bottom: 20px;
+    margin-bottom: 24px;
 }
 
 .highlight {
     display: inline-block;
-    padding: 6px 10px;
-    border-radius: 8px;
-    background: rgba(77, 208, 225, 0.18);
-    border: 1px solid rgba(77, 208, 225, 0.4);
+    padding: 6px 12px;
+    border-radius: 12px;
+    background: rgba(0, 122, 255, 0.12);
+    border: 1px solid rgba(0, 122, 255, 0.24);
     font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
     font-size: 0.95rem;
+    color: #0b294f;
 }
 
 .stack {
     display: grid;
-    gap: 18px;
+    gap: 24px;
 }
 
 .footer-note {
     text-align: center;
-    margin-top: 20px;
-    font-size: 0.85rem;
+    margin-top: 32px;
+    font-size: 0.9rem;
     color: var(--muted-text);
 }
 
