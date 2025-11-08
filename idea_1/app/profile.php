@@ -21,9 +21,9 @@ if (!$row) { die("No user."); }
         <header class="app-header">
             <h1>User Profile</h1>
             <nav class="app-nav">
-                <a href="index.php">Home</a>
-                <a href="profile.php">Profile</a>
-                <a href="upload.php">Upload</a>
+                <a href="index.php">Overview</a>
+                <a href="profile.php">Portal</a>
+                <a href="upload.php">Labs</a>
             </nav>
         </header>
 
@@ -31,7 +31,7 @@ if (!$row) { die("No user."); }
             <div>
                 <h2><?php echo htmlspecialchars($row['username'], ENT_QUOTES, 'UTF-8'); ?></h2>
                 <p class="muted">
-                    Session context is active. Review network activity to understand how profile data is fetched.
+                    Session context is active. Observe the calls that populate this dashboard to map enforced and missing controls.
                 </p>
             </div>
             <div class="card">

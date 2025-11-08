@@ -10,7 +10,7 @@
 <body>
     <div class="app-shell">
         <header class="app-header">
-            <h1>Vulnerable App Playground</h1>
+            <h1>Cisco Security Labs</h1>
             <nav class="app-nav">
                 <a href="index.php">Overview</a>
                 <a href="login.php">Portal</a>
@@ -22,8 +22,8 @@
             <div>
                 <h2>Security Labs in a Single Stack</h2>
                 <p class="muted">
-                    A polished training environment built with classic vulnerabilities. Inspect the flows, observe the responses,
-                    and document the impact. Every screen keeps the original behaviors intact.
+                    Explore an intentionally vulnerable application wrapped in a Cisco-inspired interface. Use it to brief teams,
+                    rehearse CTF scenarios, or demonstrate how legacy flaws surface in modern customer-facing portals.
                 </p>
             </div>
             <div class="card">
@@ -34,10 +34,10 @@
                     <span class="highlight">Unsafe Deserialization</span>
                 </p>
             </div>
-            <button onclick="window.location.href='login.php'">Open the Portal</button>
+            <button onclick="window.location.href='login.php'">Enter Training Portal</button>
         </div>
 
-        <p class="footer-note">For controlled environments only. Crafted to mirror a modern product experience.</p>
+        <p class="footer-note">Internal training artifact. Not intended for production use.</p>
     </div>
 </body>
 </html>

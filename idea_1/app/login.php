@@ -26,18 +26,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="app-shell">
         <header class="app-header">
-            <h1>Login Portal</h1>
+            <h1>Access Console</h1>
             <nav class="app-nav">
-                <a href="index.php">Home</a>
-                <a href="login.php">Login</a>
-                <a href="upload.php">Upload</a>
+                <a href="index.php">Overview</a>
+                <a href="login.php">Portal</a>
+                <a href="upload.php">Labs</a>
             </nav>
         </header>
 
         <div class="card">
-            <h2>Sign In</h2>
+            <h2>Authenticate</h2>
             <p class="muted">
-                Authenticate to reach the dashboard. Audit the request flow to understand how the portal behaves.
+                Provide credentials to continue into the internal lab workspace. Monitor the request lifecycle to understand
+                how this surface validates access.
             </p>
 
             <?php if ($error): ?>

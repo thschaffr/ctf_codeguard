@@ -28,9 +28,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <header class="app-header">
             <h1>Unsafe Deserialization Lab</h1>
             <nav class="app-nav">
-                <a href="index.php">Home</a>
-                <a href="profile.php">Profile</a>
-                <a href="upload.php">Upload</a>
+                <a href="index.php">Overview</a>
+                <a href="profile.php">Portal</a>
+                <a href="upload.php">Labs</a>
             </nav>
         </header>
 
