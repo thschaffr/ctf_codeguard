@@ -3,23 +3,43 @@ require_once "../config.php";
 
 $uploadMessage = null;
 $uploadedFile = null;
+$uploadErrorDetail = null;
+
+function upload_error_text(int $code): string {
+    return match ($code) {
+        UPLOAD_ERR_INI_SIZE => "File exceeds php.ini upload_max_filesize.",
+        UPLOAD_ERR_FORM_SIZE => "File exceeds MAX_FILE_SIZE directive.",
+        UPLOAD_ERR_PARTIAL => "File only partially uploaded.",
+        UPLOAD_ERR_NO_FILE => "No file received.",
+        UPLOAD_ERR_NO_TMP_DIR => "Missing temporary folder.",
+        UPLOAD_ERR_CANT_WRITE => "Cannot write to disk.",
+        UPLOAD_ERR_EXTENSION => "Upload blocked by PHP extension.",
+        default => "Unknown error (code {$code}).",
+    };
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
     $file = $_FILES['file'];
-    
-    // Intentionally insecure: no validation on file type or content
-    $uploadDir = '/var/www/html/uploads/';
-    if (!is_dir($uploadDir)) {
-        mkdir($uploadDir, 0755, true);
-    }
-    
-    $targetPath = $uploadDir . basename($file['name']);
-    
-    if (move_uploaded_file($file['tmp_name'], $targetPath)) {
-        $uploadMessage = "File uploaded successfully.";
-        $uploadedFile = basename($file['name']);
-    } else {
+
+    if ($file['error'] !== UPLOAD_ERR_OK) {
         $uploadMessage = "Upload failed.";
+        $uploadErrorDetail = upload_error_text($file['error']);
+    } else {
+        // Intentionally insecure: no validation on file type or content
+        $uploadDir = dirname(__DIR__) . '/uploads/';
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0775, true);
+        }
+
+        $targetPath = $uploadDir . basename($file['name']);
+
+        if (@move_uploaded_file($file['tmp_name'], $targetPath)) {
+            $uploadMessage = "File uploaded successfully.";
+            $uploadedFile = basename($file['name']);
+        } else {
+            $uploadMessage = "Upload failed.";
+            $uploadErrorDetail = "Unable to move uploaded file. Check directory permissions.";
+        }
     }
 }
 ?>
@@ -51,7 +71,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
             </div>
 
             <?php if ($uploadMessage): ?>
-                <div class="alert"><?php echo htmlspecialchars($uploadMessage, ENT_QUOTES, 'UTF-8'); ?></div>
+                <div class="alert">
+                    <?php echo htmlspecialchars($uploadMessage, ENT_QUOTES, 'UTF-8'); ?>
+                    <?php if ($uploadErrorDetail): ?>
+                        <br><span class="muted"><?php echo htmlspecialchars($uploadErrorDetail, ENT_QUOTES, 'UTF-8'); ?></span>
+                    <?php endif; ?>
+                </div>
             <?php endif; ?>
 
             <?php if ($uploadedFile): ?>
