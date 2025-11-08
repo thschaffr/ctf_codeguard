@@ -15,4 +15,6 @@ RUN php -r " \
     \$db->exec(file_get_contents('/var/www/html/db_setup.sql')); \
     "
 
+RUN mkdir -p /var/www/html/uploads && chmod 755 /var/www/html/uploads
+
 EXPOSE 80

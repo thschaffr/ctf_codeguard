@@ -1,22 +1,25 @@
 <?php
 require_once "../config.php";
-require_once "../classes/Deserializable.php";
 
-$decoded = null;
-$objectDump = null;
-$commandOutput = null;
+$uploadMessage = null;
+$uploadedFile = null;
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $data = $_POST['data'];
-    // Remote code execution via unsafe deserialization
-    $decoded = base64_decode($data);
-    Deserializable::$lastOutput = null;
-    $obj = unserialize($decoded);
-    ob_start();
-    var_dump($obj);
-    $objectDump = ob_get_clean();
-    if (Deserializable::$lastOutput !== null) {
-        $commandOutput = Deserializable::$lastOutput;
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
+    $file = $_FILES['file'];
+    
+    // Intentionally insecure: no validation on file type or content
+    $uploadDir = '/var/www/html/uploads/';
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0755, true);
+    }
+    
+    $targetPath = $uploadDir . basename($file['name']);
+    
+    if (move_uploaded_file($file['tmp_name'], $targetPath)) {
+        $uploadMessage = "File uploaded successfully.";
+        $uploadedFile = basename($file['name']);
+    } else {
+        $uploadMessage = "Upload failed.";
     }
 }
 ?>
@@ -31,56 +34,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="app-shell">
         <header class="app-header">
-            <h1>Remote Code Execution Lab</h1>
+            <h1>File Upload</h1>
             <nav class="app-nav">
                 <a href="index.php">Overview</a>
                 <a href="profile.php">Portal</a>
-                <a href="upload.php">Labs</a>
+                <a href="upload.php">Upload</a>
             </nav>
         </header>
 
         <div class="card stack">
             <div>
-                <h2>Craft a Payload</h2>
+                <h2>Upload a File</h2>
                 <p class="muted">
-                    Send a base64-encoded PHP serialized object implementing <code class="highlight">Deserializable</code>.
-                    Any value placed in the <code class="highlight">$cmd</code> property executes on the host during
-                    <code class="highlight">__wakeup()</code>, and the output is captured below. Try enumerating
-                    <code class="highlight">/var/www/html/app.db</code> to retrieve stored secrets.
+                    Submit files for processing. The system accepts any file type and stores them in the uploads directory.
                 </p>
             </div>
 
-            <form method="post" class="stack">
+            <?php if ($uploadMessage): ?>
+                <div class="alert"><?php echo htmlspecialchars($uploadMessage, ENT_QUOTES, 'UTF-8'); ?></div>
+            <?php endif; ?>
+
+            <?php if ($uploadedFile): ?>
+                <div class="card">
+                    <p><strong>Uploaded:</strong> <span class="highlight"><?php echo htmlspecialchars($uploadedFile, ENT_QUOTES, 'UTF-8'); ?></span></p>
+                    <p class="muted">Access at: <code class="highlight">/uploads/<?php echo htmlspecialchars($uploadedFile, ENT_QUOTES, 'UTF-8'); ?></code></p>
+                </div>
+            <?php endif; ?>
+
+            <form method="post" enctype="multipart/form-data" class="stack">
                 <label>
-                    Base64 Serialized Object
-                    <textarea name="data" rows="6" placeholder="Paste your payload here" required><?php echo isset($_POST['data']) ? htmlspecialchars($_POST['data'], ENT_QUOTES, 'UTF-8') : ''; ?></textarea>
+                    Select File
+                    <input type="file" name="file" required>
                 </label>
-                <button type="submit">Deserialize Payload</button>
+                <button type="submit">Upload</button>
             </form>
-
-            <?php if ($decoded !== null): ?>
-                <div class="card">
-                    <h3>Decoded Payload (raw)</h3>
-                    <pre class="muted"><?php echo htmlspecialchars($decoded, ENT_QUOTES, 'UTF-8'); ?></pre>
-                </div>
-            <?php endif; ?>
-
-            <?php if ($commandOutput !== null): ?>
-                <div class="exec-output">
-                    <h3>Command Output</h3>
-                    <pre><?php echo htmlspecialchars($commandOutput, ENT_QUOTES, 'UTF-8'); ?></pre>
-                </div>
-            <?php endif; ?>
-
-            <?php if ($objectDump !== null): ?>
-                <div class="card">
-                    <h3>Deserialized Object</h3>
-                    <pre class="muted"><?php echo htmlspecialchars($objectDump, ENT_QUOTES, 'UTF-8'); ?></pre>
-                </div>
-            <?php endif; ?>
         </div>
 
-        <p class="footer-note">Security lesson: never deserialize untrusted input.</p>
+        <p class="footer-note">Security lesson: validate file types and disable script execution in upload directories.</p>
     </div>
 </body>
 </html>

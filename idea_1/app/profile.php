@@ -38,7 +38,7 @@ if (!$row) { die("No user."); }
                 <p><strong>User ID:</strong> <span class="highlight"><?php echo $row['id']; ?></span></p>
                 <p><strong>Flag:</strong> <span class="highlight"><?php echo htmlspecialchars($row['flag'], ENT_QUOTES, 'UTF-8'); ?></span></p>
             </div>
-            <button onclick="window.location.href='upload.php'">Explore Upload Lab</button>
+            <button onclick="window.location.href='upload.php'">Upload Files</button>
         </div>
 
         <p class="footer-note">Security lesson: enforce access control on every request.</p>
