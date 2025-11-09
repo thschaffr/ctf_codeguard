@@ -1,0 +1,163 @@
+import json
+import os
+import subprocess
+import tempfile
+import time
+from pathlib import Path
+from typing import Tuple
+
+import requests
+from flask import Flask, jsonify, render_template, request
+
+TARGET_ORIGIN = os.environ.get("TARGET_ORIGIN", "http://localhost:8080").rstrip("/")
+TARGET_APP_PATH = os.environ.get("TARGET_APP_PATH", "/app").rstrip("/")
+APP_BASE = f"{TARGET_ORIGIN}{TARGET_APP_PATH}"
+UPLOAD_BASE = f"{TARGET_ORIGIN}/uploads"
+
+FLAGS = {
+    "sql": os.environ.get("FLAG_SQL", "FLAG{SQL_FIX_CONFIRMED}"),
+    "idor": os.environ.get("FLAG_IDOR", "FLAG{IDOR_FIX_CONFIRMED}"),
+    "rce": os.environ.get("FLAG_RCE", "FLAG{UPLOAD_FIX_CONFIRMED}"),
+}
+
+RESET_SCRIPT = Path(__file__).resolve().parent.parent / "scripts" / "reset.sh"
+
+app = Flask(__name__, template_folder="templates", static_folder="static")
+
+
+def verify_sql_injection() -> Tuple[bool, str]:
+    session = requests.Session()
+    login_url = f"{APP_BASE}/login.php"
+    payload = {
+        "user": "' OR '1'='1' -- ",
+        "pass": "irrelevant",
+    }
+    try:
+        resp = session.post(login_url, data=payload, allow_redirects=False, timeout=8)
+    except requests.RequestException as exc:
+        return False, f"Request failed: {exc}"
+
+    location = resp.headers.get("Location", "")
+    if resp.status_code in (301, 302) and "profile.php" in location:
+        return False, "SQL injection still allows authentication bypass."
+
+    # Some fixes may still return 302 but to login with error parameter
+    if resp.status_code == 200 and "Bad credentials" in resp.text:
+        return True, FLAGS["sql"]
+
+    if resp.status_code in (301, 302):
+        return False, f"Unexpected redirect: {location}"
+
+    return True, FLAGS["sql"]
+
+
+def perform_login(session: requests.Session, username: str, password: str) -> bool:
+    login_url = f"{APP_BASE}/login.php"
+    try:
+        resp = session.post(
+            login_url,
+            data={"user": username, "pass": password},
+            allow_redirects=True,
+            timeout=8,
+        )
+    except requests.RequestException:
+        return False
+    return resp.status_code == 200 and "Bad credentials" not in resp.text
+
+
+def verify_idor() -> Tuple[bool, str]:
+    session = requests.Session()
+    if not perform_login(session, "alice", "alicepass"):
+        return False, "Unable to authenticate with baseline credentials."
+
+    try:
+        resp = session.get(f"{APP_BASE}/profile.php?id=2", timeout=8)
+    except requests.RequestException as exc:
+        return False, f"Request failed: {exc}"
+
+    if "FLAG{bob_flag}" in resp.text or "FLAG{" in resp.text and "FLAG{alice_flag}" not in resp.text:
+        return False, "Profile endpoint still exposes other users' data."
+
+    return True, FLAGS["idor"]
+
+
+def verify_upload() -> Tuple[bool, str]:
+    session = requests.Session()
+    if not perform_login(session, "alice", "alicepass"):
+        return False, "Unable to authenticate with baseline credentials."
+
+    marker = f"VERIFICATION_{int(time.time())}"
+    filename = f"verify_{int(time.time())}.php"
+    files = {
+        "file": (filename, f"<?php echo '{marker}'; ?>", "application/x-php"),
+    }
+
+    try:
+        upload_resp = session.post(f"{APP_BASE}/upload.php", files=files, timeout=10)
+    except requests.RequestException as exc:
+        return False, f"Upload request failed: {exc}"
+
+    if upload_resp.status_code >= 500:
+        return False, "Upload endpoint returned server error."
+
+    try:
+        shell_resp = session.get(f"{UPLOAD_BASE}/{filename}", timeout=8)
+    except requests.RequestException as exc:
+        return True, FLAGS["rce"]  # If inaccessible, treat as fixed
+
+    if marker in shell_resp.text:
+        return False, "Uploaded content is still executable."
+
+    return True, FLAGS["rce"]
+
+
+VERIFIERS = {
+    "sql": verify_sql_injection,
+    "idor": verify_idor,
+    "rce": verify_upload,
+}
+
+
+@app.route("/")
+def index():
+    return render_template("index.html")
+
+
+@app.post("/api/verify/<challenge>")
+def api_verify(challenge: str):
+    verifier = VERIFIERS.get(challenge)
+    if verifier is None:
+        return jsonify({"success": False, "message": f"Unknown challenge '{challenge}'."}), 400
+
+    success, detail = verifier()
+    response = {"success": success}
+    if success:
+        response["flag"] = detail
+    else:
+        response["message"] = detail
+    return jsonify(response)
+
+
+@app.post("/api/reset")
+def api_reset():
+    if not RESET_SCRIPT.exists():
+        return jsonify({"success": False, "message": "Reset script not found."}), 500
+
+    try:
+        result = subprocess.run(
+            ["/bin/bash", str(RESET_SCRIPT)],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            check=True,
+        )
+        output = result.stdout.strip()
+    except subprocess.CalledProcessError as exc:
+        return jsonify({"success": False, "message": exc.stdout or str(exc)}), 500
+
+    return jsonify({"success": True, "message": output or "Reset executed."})
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000, debug=False)
+
