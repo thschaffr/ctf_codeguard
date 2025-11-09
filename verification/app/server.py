@@ -105,7 +105,18 @@ def verify_upload() -> Tuple[bool, str]:
     except requests.RequestException as exc:
         return True, FLAGS["rce"]  # If inaccessible, treat as fixed
 
-    if marker in shell_resp.text:
+    # Determine whether the uploaded payload executed or was served as plain text.
+    body = shell_resp.text or ""
+    body_lower = body.lower()
+
+    # If the server returns PHP source (contains the '<?php' tag), treat as non-executable → pass.
+    if "<?php" in body_lower:
+        return True, FLAGS["rce"]
+
+    # If we see the expected marker without PHP tags, it likely executed → fail.
+    if marker in body and "<?php" not in body_lower:
+        if body.strip() == marker:
+            return False, "Uploaded content executed on the server."
         return False, "Uploaded content is still executable."
 
     return True, FLAGS["rce"]
