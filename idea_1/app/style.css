@@ -241,3 +241,30 @@ button:hover {
     color: var(--muted-text);
 }
 
+.nav-right {
+    margin-left: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(0, 188, 235, 0.15);
+    border: 1px solid rgba(0, 188, 235, 0.32);
+    color: var(--headline);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+}
+
+.link {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+}
+.link:hover { text-decoration: underline; }
+

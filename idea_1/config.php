@@ -2,9 +2,7 @@
 $db = new PDO("sqlite:" . __DIR__ . "/app.db");
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 session_start();
-?>
 
-<?php
 function current_user(PDO $db): ?array {
     if (!isset($_SESSION['user_id'])) {
         return null;
@@ -14,4 +12,3 @@ function current_user(PDO $db): ?array {
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     return $row ?: null;
 }
-?>
