@@ -16,6 +16,8 @@ git config --global --add safe.directory "${APP_DIR}"
 git config --global --add safe.directory "$(dirname "${APP_DIR}")"
 git -C "${APP_DIR}" fetch --all
 git -C "${APP_DIR}" reset --hard origin/main
+HOST_OWNER=$(stat -c '%u:%g' "${APP_DIR}")
+chown -R "${HOST_OWNER}" "${APP_DIR}"
 
 echo "[reset] Rebuilding image '${IMAGE_NAME}' from '${APP_DIR}'..."
 docker rm -f "${CONTAINER_NAME}" >/dev/null 2>&1 || true
