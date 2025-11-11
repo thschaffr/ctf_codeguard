@@ -12,6 +12,8 @@ if ! command -v docker >/dev/null 2>&1; then
 fi
 
 echo "[reset] Cleaning repository state..."
+git config --global --add safe.directory "${APP_DIR}"
+git config --global --add safe.directory "$(dirname "${APP_DIR}")"
 git -C "${APP_DIR}" fetch --all
 git -C "${APP_DIR}" reset --hard origin/main
 
