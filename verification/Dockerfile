@@ -1,9 +1,13 @@
 FROM python:3.11-slim
 
-ENV PYTHONUNBUFFERED=1 \
-    POETRY_VERSION=1.8.3
+ENV PYTHONUNBUFFERED=1
 
 WORKDIR /opt/verification
+
+# Install docker CLI so the reset script can call docker when the socket is mounted
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends docker.io \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt

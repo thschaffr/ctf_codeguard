@@ -46,6 +46,7 @@ docker run -d \
   -e TARGET_ORIGIN=http://localhost:8080 \
   -e APP_SOURCE_DIR=/path/to/idea_1 \
   -v /var/run/docker.sock:/var/run/docker.sock \
+  -v /path/to/ctf_codeguard:/workspace \
   challenge-verifier
 ```
 
@@ -60,4 +61,6 @@ Access the UI at `http://localhost:5000` (or the mapped port).
 3. `docker run -d -p $APP_PORT_MAPPING --name $APP_CONTAINER_NAME $APP_IMAGE_NAME`
 
 Ensure the specified paths are reachable from inside the verification container (mount them if necessary).
+
+> **Important:** The reset button requires the Docker socket to be mounted and (optionally) the `idea_1` directory mounted at `/workspace/idea_1` so rebuilding starts from a clean copy of the vulnerable app.
 
