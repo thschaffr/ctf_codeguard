@@ -11,6 +11,13 @@ if ! command -v docker >/dev/null 2>&1; then
   exit 1
 fi
 
+# Restore repository state if git metadata is present
+if [ -d "${APP_DIR}/.git" ]; then
+  echo "[reset] Restoring application sources from origin/main..."
+  git -C "${APP_DIR}" fetch origin >/dev/null 2>&1 || true
+  git -C "${APP_DIR}" reset --hard origin/main >/dev/null 2>&1 || true
+fi
+
 echo "[reset] Rebuilding image '${IMAGE_NAME}' from '${APP_DIR}'..."
 docker rm -f "${CONTAINER_NAME}" >/dev/null 2>&1 || true
 docker build -t "${IMAGE_NAME}" "${APP_DIR}"
