@@ -171,11 +171,15 @@ def api_reset():
         return jsonify({"success": False, "message": cleaned_error}), 500
 
     # Clean legacy builder warning from the success output
-    if output.startswith("DEPRECATED: The legacy builder is deprecated"):
+    if output.startswith("DEPRECATED:"):
         output_lines = output.splitlines()
         output = "\n".join(line for line in output_lines if not line.startswith("DEPRECATED:"))
 
-    return jsonify({"success": True, "message": output or "Reset executed."})
+    # Always return a short success message to the UI
+    return jsonify({
+        "success": True,
+        "message": "Environment reset successfully."
+    })
 
 
 if __name__ == "__main__":
