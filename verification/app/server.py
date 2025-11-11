@@ -182,6 +182,39 @@ def api_reset():
     })
 
 
+@app.post("/api/rebuild")
+def api_rebuild():
+    rebuild_cmd = [
+        "/bin/bash",
+        "-lc",
+        "docker rm -f vuln_app >/dev/null 2>&1 || true && "
+        "docker build -t vuln_app /workspace/idea_1 && "
+        "docker run -d -p 8080:80 --name vuln_app vuln_app"
+    ]
+
+    try:
+        result = subprocess.run(
+            rebuild_cmd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            check=True,
+        )
+        output = result.stdout.strip()
+    except subprocess.CalledProcessError as exc:
+        cleaned_error = (exc.stdout or str(exc)).strip()
+        return jsonify({"success": False, "message": cleaned_error}), 500
+
+    if output.startswith("DEPRECATED:"):
+        output_lines = output.splitlines()
+        output = "\n".join(line for line in output_lines if not line.startswith("DEPRECATED:"))
+
+    return jsonify({
+        "success": True,
+        "message": "Vulnerable app rebuilt and restarted."
+    })
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=False)
 

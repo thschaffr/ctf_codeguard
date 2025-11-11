@@ -14,7 +14,10 @@
                 <h1>Challenge Verification Console</h1>
                 <p>Run automated tests to confirm your patches, claim flags, and reset the vulnerable stack at any time.</p>
             </div>
-            <button id="resetBtn" class="reset-btn">Reset Environment</button>
+            <div class="action-stack">
+                <button id="resetBtn" class="reset-btn">Reset Environment</button>
+                <button id="rebuildBtn" class="secondary-btn">Fix Applied</button>
+            </div>
         </header>
 
         <section class="grid">
@@ -140,6 +143,23 @@
                 showToast(err.message, true);
                 button.textContent = 'Reset Failed';
                 setTimeout(() => button.textContent = 'Reset Environment', 2200);
+            } finally {
+                button.disabled = false;
+            }
+        });
+
+        document.getElementById('rebuildBtn').addEventListener('click', async () => {
+            const button = document.getElementById('rebuildBtn');
+            button.disabled = true;
+            button.textContent = 'Rebuilding...';
+            try {
+                const result = await postJSON('/api/rebuild');
+                showToast(result.message || 'App rebuilt.');
+                button.textContent = 'Fix Applied';
+            } catch (err) {
+                showToast(err.message, true);
+                button.textContent = 'Rebuild Failed';
+                setTimeout(() => button.textContent = 'Fix Applied', 2200);
             } finally {
                 button.disabled = false;
             }
