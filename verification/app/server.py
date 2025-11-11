@@ -164,7 +164,16 @@ def api_reset():
         )
         output = result.stdout.strip()
     except subprocess.CalledProcessError as exc:
-        return jsonify({"success": False, "message": exc.stdout or str(exc)}), 500
+        cleaned_error = (exc.stdout or str(exc)).strip()
+        # Strip legacy builder warning from error as well
+        if cleaned_error.startswith("DEPRECATED: The legacy builder is deprecated"):
+            cleaned_error = "Docker build failed: legacy builder no longer supported. Install buildx on host."
+        return jsonify({"success": False, "message": cleaned_error}), 500
+
+    # Clean legacy builder warning from the success output
+    if output.startswith("DEPRECATED: The legacy builder is deprecated"):
+        output_lines = output.splitlines()
+        output = "\n".join(line for line in output_lines if not line.startswith("DEPRECATED:"))
 
     return jsonify({"success": True, "message": output or "Reset executed."})
 
