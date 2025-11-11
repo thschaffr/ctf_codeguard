@@ -11,21 +11,6 @@ if ! command -v docker >/dev/null 2>&1; then
   exit 1
 fi
 
-if ! command -v git >/dev/null 2>&1; then
-  echo "Git not available on PATH. Cannot restore repository state." >&2
-  exit 1
-fi
-
-# Restore repository state if git metadata is present
-if [ -d "${APP_DIR}/.git" ]; then
-  echo "[reset] Restoring application sources from origin/main..."
-  git -C "${APP_DIR}" fetch origin
-  git -C "${APP_DIR}" reset --hard origin/main
-  git -C "${APP_DIR}" clean -fd
-else
-  echo "[reset] Git metadata not found in ${APP_DIR}; skipping source restore."
-fi
-
 echo "[reset] Rebuilding image '${IMAGE_NAME}' from '${APP_DIR}'..."
 docker rm -f "${CONTAINER_NAME}" >/dev/null 2>&1 || true
 docker build -t "${IMAGE_NAME}" "${APP_DIR}"

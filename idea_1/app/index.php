@@ -9,7 +9,25 @@
 </head>
 <body>
     <div class="app-shell">
-        <?php include "nav.php"; ?>
+        <header class="app-header">
+            <h1>Cisco Security Labs</h1>
+            <?php $user = current_user($db); ?>
+            <nav class="app-nav">
+                <a href="index.php">Overview</a>
+                <?php if ($user): ?>
+                    <a href="profile.php">Profile</a>
+                    <a href="upload.php">Upload</a>
+                <?php else: ?>
+                    <a href="login.php">Login</a>
+                <?php endif; ?>
+            </nav>
+            <div class="nav-right">
+                <?php if ($user): ?>
+                    <span class="badge">Signed in as <?php echo htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8'); ?></span>
+                    <a class="link" href="logout.php">Logout</a>
+                <?php endif; ?>
+            </div>
+        </header>
 
         <div class="card stack">
             <div>

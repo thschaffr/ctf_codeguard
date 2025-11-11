@@ -6,7 +6,7 @@ WORKDIR /opt/verification
 
 # Install Docker CLI (client only) so reset.sh can call docker when the socket is mounted
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends curl ca-certificates gnupg lsb-release git \
+    && apt-get install -y --no-install-recommends curl ca-certificates gnupg lsb-release \
     && install -m 0755 -d /etc/apt/keyrings \
     && curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg \
     && chmod a+r /etc/apt/keyrings/docker.gpg \
