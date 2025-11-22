@@ -34,6 +34,8 @@ body {
 
 .app-shell {
     width: 100%;
+    max-width: 1200px; /* Added max-width to center content */
+    margin: 0 auto; /* Center the container */
     min-height: 100vh;
     background: transparent;
     border-top: none;
@@ -192,68 +194,7 @@ button:hover {
     font-family: "Courier New", monospace;
 }
 
-/* Pacman Animation Footer */
-.footer-anim {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 60px;
-    overflow: hidden;
-    z-index: 10;
-    pointer-events: none;
-    background: transparent;
-}
-
-.pacman {
-    position: absolute;
-    bottom: 10px;
-    left: -100px;
-    width: 0;
-    height: 0;
-    border-right: 30px solid transparent;
-    border-top: 30px solid var(--accent);
-    border-left: 30px solid var(--accent);
-    border-bottom: 30px solid var(--accent);
-    border-radius: 30px;
-    animation: chomp 0.5s infinite linear, moveRight 10s infinite linear;
-}
-
-.ghost {
-    position: absolute;
-    bottom: 15px;
-    width: 40px;
-    height: 40px;
-    background: var(--danger);
-    border-radius: 20px 20px 0 0;
-    animation: moveRight 10s infinite linear;
-}
-.ghost::before, .ghost::after {
-    content: '';
-    position: absolute;
-    background: #fff;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    top: 10px;
-    left: 8px;
-}
-.ghost::after { left: 22px; }
-
-.ghost-1 { animation-delay: 0.5s; left: -160px; }
-.ghost-2 { animation-delay: 0.5s; left: -220px; background: #ffbf00; }
-
-@keyframes chomp {
-    0% { transform: rotate(0deg); }
-    50% { transform: rotate(45deg); } /* Mouth opens top */
-    100% { transform: rotate(0deg); }
-}
-/* Better chomp via clip-path would be ideal, but border hack is simpler */
-
-@keyframes moveRight {
-    0% { left: -100px; }
-    100% { left: 110%; }
-}
+    /* Removed Pacman animation from vuln_app */
 
 .nav-right { margin-left: 20px; display: inline-flex; align-items: center; gap: 20px; }
 .badge {

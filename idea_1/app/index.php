@@ -31,10 +31,12 @@
 
         <div class="stack">
             <div>
-                <h2>Security is a Vibe</h2>
+                <h2>CodeGuard Challenge: The Intern's Legacy</h2>
                 <p class="muted">
-                    Explore an intentionally vulnerable application wrapped in a Cisco-inspired interface. Use it to brief teams,
-                    rehearse CTF scenarios, or demonstrate how legacy flaws surface in modern customer-facing portals.
+                    Meet "Security is a Vibe" — the passion project of our newest junior developer, Alex. Alex is brilliant, enthusiastic, and completely convinced that "if it works, it's secure." 
+                </p>
+                <p class="muted">
+                    He built this platform to showcase modern rapid development, but in his haste, he left behind some classic vulnerabilities. Your mission is to step into the role of a Senior Security Engineer: audit Alex's code, exploit the flaws to prove the risk, and then patch them to secure the stack.
                 </p>
             </div>
             <div class="card">
@@ -49,12 +51,6 @@
         </div>
 
         <p class="footer-note">Internal training artifact. Not intended for production use.</p>
-    </div>
-    
-    <div class="footer-anim">
-        <div class="pacman"></div>
-        <div class="ghost ghost-1"></div>
-        <div class="ghost ghost-2"></div>
     </div>
 </body>
 </html>
