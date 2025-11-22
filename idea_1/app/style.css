@@ -1,20 +1,21 @@
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;600;700&display=swap");
 
 :root {
-    --bg-gradient: linear-gradient(140deg, #0b1f33 0%, #123652 35%, #0a293f 100%);
-    --panel-bg: rgba(255, 255, 255, 0.97);
-    --panel-border: rgba(0, 86, 125, 0.12);
-    --headline: #002a3a;
-    --text-color: #1a2733;
-    --muted-text: rgba(26, 39, 51, 0.72);
+    /* Cisco Brand Palette - Dark & Vibe */
+    --bg-gradient: linear-gradient(135deg, #0D274D 0%, #1B4176 100%);
+    --panel-bg: #ffffff;
+    --panel-border: rgba(0, 188, 235, 0.2);
+    --headline: #1B4176;
+    --text-color: #393939;
+    --muted-text: #58585b;
     --accent: #00bceb;
-    --accent-dark: #0093c7;
-    --danger: #ff5a5f;
-    --divider: rgba(0, 61, 94, 0.12);
-    --shadow-soft: 0 32px 64px rgba(8, 28, 44, 0.28), 0 8px 24px rgba(8, 28, 44, 0.12);
-    --radius-large: 24px;
-    --radius-medium: 18px;
-    --radius-small: 12px;
+    --accent-dark: #005073;
+    --danger: #e2231a;
+    --divider: #e0e0e0;
+    --shadow-soft: 0 16px 32px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.05);
+    --radius-large: 4px;
+    --radius-medium: 4px;
+    --radius-small: 4px;
 }
 
 * {
@@ -24,7 +25,7 @@
 body {
     margin: 0;
     min-height: 100vh;
-    font-family: "Lato", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-family: "CiscoSans", "Lato", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
     background: var(--bg-gradient);
     color: var(--text-color);
     display: flex;
@@ -34,12 +35,12 @@ body {
 }
 
 .app-shell {
-    width: min(780px, 100%);
+    width: min(960px, 100%);
     background: var(--panel-bg);
-    border: 1px solid var(--panel-border);
+    border-top: 4px solid var(--accent);
     border-radius: var(--radius-large);
     box-shadow: var(--shadow-soft);
-    padding: 42px 48px;
+    padding: 48px;
 }
 
 .app-header {

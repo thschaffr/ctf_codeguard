@@ -10,7 +10,7 @@
 <body>
     <div class="app-shell">
         <header class="app-header">
-            <h1>Cisco Security Labs</h1>
+            <h1>Security is Vibe</h1>
             <?php $user = current_user($db); ?>
             <nav class="app-nav">
                 <a href="index.php">Overview</a>
@@ -31,7 +31,7 @@
 
         <div class="card stack">
             <div>
-                <h2>Security Labs in a Single Stack</h2>
+                <h2>Security is Vibe</h2>
                 <p class="muted">
                     Explore an intentionally vulnerable application wrapped in a Cisco-inspired interface. Use it to brief teams,
                     rehearse CTF scenarios, or demonstrate how legacy flaws surface in modern customer-facing portals.
