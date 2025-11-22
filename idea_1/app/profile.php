@@ -14,7 +14,7 @@ if (!$row) { die("No user."); }
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile | Vulnerable App</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=<?php echo time(); ?>">
 </head>
 <body>
     <div class="app-shell">
@@ -38,7 +38,7 @@ if (!$row) { die("No user."); }
             </div>
         </header>
 
-        <div class="card stack">
+        <div class="stack">
             <div>
                 <h2><?php echo htmlspecialchars($row['username'], ENT_QUOTES, 'UTF-8'); ?></h2>
                 <p class="muted">

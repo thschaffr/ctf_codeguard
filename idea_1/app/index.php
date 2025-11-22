@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vulnerable App Playground</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=<?php echo time(); ?>">
 </head>
 <body>
     <div class="app-shell">
@@ -29,7 +29,7 @@
             </div>
         </header>
 
-        <div class="card stack">
+        <div class="stack">
             <div>
                 <h2>Security is a Vibe</h2>
                 <p class="muted">
