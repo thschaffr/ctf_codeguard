@@ -28,18 +28,16 @@ body {
     font-family: "CiscoSans", "Lato", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
     background: var(--bg-gradient);
     color: var(--text-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 56px 32px;
+    display: block;
+    padding: 0;
 }
 
 .app-shell {
-    width: min(960px, 100%);
+    width: 100%;
+    min-height: 100vh;
     background: var(--panel-bg);
     border-top: 4px solid var(--accent);
-    border-radius: var(--radius-large);
-    box-shadow: var(--shadow-soft);
+    box-shadow: none;
     padding: 48px;
 }
 
