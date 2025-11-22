@@ -72,5 +72,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <p class="footer-note">Intentionally vulnerable. Handle with caution.</p>
     </div>
+
+    <div class="footer-anim">
+        <div class="pacman"></div>
+        <div class="ghost ghost-1"></div>
+        <div class="ghost ghost-2"></div>
+    </div>
 </body>
 </html>

@@ -50,5 +50,11 @@
 
         <p class="footer-note">Internal training artifact. Not intended for production use.</p>
     </div>
+    
+    <div class="footer-anim">
+        <div class="pacman"></div>
+        <div class="ghost ghost-1"></div>
+        <div class="ghost ghost-2"></div>
+    </div>
 </body>
 </html>

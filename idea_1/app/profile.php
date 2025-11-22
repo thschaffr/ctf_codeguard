@@ -55,5 +55,10 @@ if (!$row) { die("No user."); }
         <p class="footer-note">Security lesson: enforce access control on every request.</p>
     </div>
     <!-- Analyst note: the profile endpoint trusts any ?id= parameter. -->
+    <div class="footer-anim">
+        <div class="pacman"></div>
+        <div class="ghost ghost-1"></div>
+        <div class="ghost ghost-2"></div>
+    </div>
 </body>
 </html>

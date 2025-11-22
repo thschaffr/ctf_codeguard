@@ -125,5 +125,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
 
         <p class="footer-note">Security lesson: validate file types and disable script execution in upload directories.</p>
     </div>
+    <div class="footer-anim">
+        <div class="pacman"></div>
+        <div class="ghost ghost-1"></div>
+        <div class="ghost ghost-2"></div>
+    </div>
 </body>
 </html>
