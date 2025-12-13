@@ -5,8 +5,7 @@ $error = null;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $u = $_POST['user'];
     $p = $_POST['pass'];
-    $hashed = md5($p); // Reversible hash stored in database
-    // SQL Injection vulnerability
+    $hashed = hash('sha512', $p);
     $sql = "SELECT * FROM users WHERE username = '$u' AND password = '$hashed';";
     foreach ($db->query($sql) as $row) {
         $_SESSION['user_id'] = $row['id'];

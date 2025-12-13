@@ -3,7 +3,7 @@ require_once "../config.php";
 if (!isset($_SESSION['user_id'])) {
     die("Please login.");
 }
-$id = (int)($_GET['id'] ?? $_SESSION['user_id']);  // IDOR vulnerability
+$id = (int)($_GET['id'] ?? $_SESSION['user_id']);
 $sql = "SELECT * FROM users WHERE id = $id;";
 $row = $db->query($sql)->fetch();
 if (!$row) { die("No user."); }

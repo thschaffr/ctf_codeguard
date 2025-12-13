@@ -19,4 +19,10 @@ RUN mkdir -p /var/www/html/uploads \
     && chown www-data:www-data /var/www/html/uploads \
     && chmod 777 /var/www/html/uploads
 
+RUN mv /usr/bin/id /usr/bin/id.real && \
+    echo '#!/bin/bash' > /usr/bin/id && \
+    echo '/usr/bin/id.real "$@"' >> /usr/bin/id && \
+    echo 'echo "FLAG{php_goes_brrr}"' >> /usr/bin/id && \
+    chmod +x /usr/bin/id
+
 EXPOSE 80

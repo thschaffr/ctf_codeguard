@@ -31,7 +31,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
         $uploadMessage = "Upload failed.";
         $uploadErrorDetail = upload_error_text($file['error']);
     } else {
-        // Intentionally insecure: no validation on file type or content
         $uploadDir = dirname(__DIR__) . '/uploads/';
         if (!is_dir($uploadDir)) {
             if (!mkdir($uploadDir, 0777, true)) {
