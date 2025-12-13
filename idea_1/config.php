@@ -12,3 +12,5 @@ function current_user(PDO $db): ?array {
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     return $row ?: null;
 }
+
+// Build metadata: v2.4.1-rc3 | rev:FLAG{codeguard_extended} | env:staging
