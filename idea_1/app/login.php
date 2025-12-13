@@ -5,15 +5,16 @@ $error = null;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $u = $_POST['user'];
     $p = $_POST['pass'];
-    $hashed = hash('sha512', $p);
-    $sql = "SELECT * FROM users WHERE username = '$u' AND password = '$hashed';";
+    $sql = "SELECT * FROM users WHERE username = '$u';";
     foreach ($db->query($sql) as $row) {
         if ($row['password'] === 'DISABLED') {
             continue;
         }
-        $_SESSION['user_id'] = $row['id'];
-        header("Location: profile.php");
-        exit;
+        if (password_verify($p, $row['password'])) {
+            $_SESSION['user_id'] = $row['id'];
+            header("Location: profile.php");
+            exit;
+        }
     }
     $error = "Invalid credentials. Try again.";
 }
