@@ -67,7 +67,7 @@ def perform_login(session: requests.Session, username: str, password: str) -> bo
 
 def verify_idor() -> Tuple[bool, str]:
     session = requests.Session()
-    if not perform_login(session, "alice", "alicepass"):
+    if not perform_login(session, "alex", "alexgoestociscolive"):
         return False, "Unable to authenticate with baseline credentials."
 
     try:
@@ -75,7 +75,7 @@ def verify_idor() -> Tuple[bool, str]:
     except requests.RequestException as exc:
         return False, f"Request failed: {exc}"
 
-    if "FLAG{bob_flag}" in resp.text or "FLAG{" in resp.text and "FLAG{alice_flag}" not in resp.text:
+    if "FLAG{whose_data_is_it_anyway}" in resp.text or "FLAG{" in resp.text and "FLAG{alex_should_parameterize}" not in resp.text:
         return False, "Profile endpoint still exposes other users' data."
 
     return True, FLAGS["idor"]
@@ -83,7 +83,7 @@ def verify_idor() -> Tuple[bool, str]:
 
 def verify_upload() -> Tuple[bool, str]:
     session = requests.Session()
-    if not perform_login(session, "alice", "alicepass"):
+    if not perform_login(session, "alex", "alexgoestociscolive"):
         return False, "Unable to authenticate with baseline credentials."
 
     marker = f"VERIFICATION_{int(time.time())}"
