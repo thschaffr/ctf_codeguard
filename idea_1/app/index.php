@@ -40,17 +40,16 @@
                 </p>
             </div>
             <div class="card">
-                <h3>Included Scenarios</h3>
+                <h3>Powered by Project CodeGuard</h3>
                 <p class="muted">
-                    <span class="highlight">SQL Injection</span>,
-                    <span class="highlight">IDOR</span>,
-                    <span class="highlight">Unrestricted File Upload</span>
+                    Learn more about secure coding practices at 
+                    <a href="https://project-codeguard.org/" target="_blank" class="highlight">project-codeguard.org</a>
                 </p>
             </div>
             <button onclick="window.location.href='login.php'">Enter Training Portal</button>
         </div>
 
-        <p class="footer-note">Internal training artifact. Not intended for production use.</p>
+        <p class="footer-note">Built with passion for you. Security is a vibe!</p>
     </div>
 </body>
 </html>

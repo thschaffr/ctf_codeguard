@@ -8,6 +8,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $hashed = hash('sha512', $p);
     $sql = "SELECT * FROM users WHERE username = '$u' AND password = '$hashed';";
     foreach ($db->query($sql) as $row) {
+        if ($row['password'] === 'DISABLED') {
+            continue;
+        }
         $_SESSION['user_id'] = $row['id'];
         header("Location: profile.php");
         exit;
