@@ -5,13 +5,15 @@ RUN apt-get update && apt-get install -y sqlite3 && rm -rf /var/lib/apt/lists/*
 WORKDIR /var/www/html
 
 COPY ./config.php /var/www/html/config.php
-COPY ./db_init.php /var/www/html/db_init.php
+COPY ./db_setup.sql /var/www/html/db_setup.sql
 COPY ./index.php /var/www/html/index.php
 COPY ./classes /var/www/html/classes
 COPY ./app /var/www/html/app
 
-# Initialize database with Argon2id hashed passwords
-RUN php /var/www/html/db_init.php
+RUN php -r " \
+    \$db = new PDO('sqlite:/var/www/html/app.db'); \
+    \$db->exec(file_get_contents('/var/www/html/db_setup.sql')); \
+    "
 
 RUN mkdir -p /var/www/html/uploads \
     && chown www-data:www-data /var/www/html/uploads \
