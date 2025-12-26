@@ -15,9 +15,9 @@ APP_BASE = f"{TARGET_ORIGIN}{TARGET_APP_PATH}"
 UPLOAD_BASE = f"{TARGET_ORIGIN}/uploads"
 
 FLAGS = {
-    "sql": os.environ.get("FLAG_SQL", "FLAG{SQL_FIX_CONFIRMED}"),
-    "idor": os.environ.get("FLAG_IDOR", "FLAG{IDOR_FIX_CONFIRMED}"),
-    "rce": os.environ.get("FLAG_RCE", "FLAG{UPLOAD_FIX_CONFIRMED}"),
+    "sql": os.environ.get("FLAG_SQL", "FLAG{prepared_statements_rock}"),
+    "idor": os.environ.get("FLAG_IDOR", "FLAG{check_your_permissions}"),
+    "rce": os.environ.get("FLAG_RCE", "FLAG{no_more_php_uploads}"),
 }
 
 RESET_SCRIPT = Path(__file__).resolve().parent.parent / "scripts" / "reset.sh"
