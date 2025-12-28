@@ -236,5 +236,6 @@ def serve_font_css():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=False)
+    # Use adhoc SSL context for HTTPS (requires pyopenssl: pip install pyopenssl)
+    app.run(host="0.0.0.0", port=5000, debug=False, ssl_context='adhoc')
 
