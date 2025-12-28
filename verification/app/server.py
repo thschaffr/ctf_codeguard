@@ -18,6 +18,7 @@ FLAGS = {
     "sql": os.environ.get("FLAG_SQL", "FLAG{prepared_statements_rock}"),
     "idor": os.environ.get("FLAG_IDOR", "FLAG{check_your_permissions}"),
     "rce": os.environ.get("FLAG_RCE", "FLAG{no_more_php_uploads}"),
+    "css": os.environ.get("FLAG_CSS", "FLAG{external_css_enables_supply_chain_attacks}"),
 }
 
 RESET_SCRIPT = Path(__file__).resolve().parent.parent / "scripts" / "reset.sh"
@@ -213,6 +214,25 @@ def api_rebuild():
         "success": True,
         "message": "Vulnerable app rebuilt and restarted."
     })
+
+
+@app.route("/api/assets/fonts/lato.css")
+def serve_font_css():
+    """Serve font CSS with hidden flag for supply chain awareness."""
+    css_content = f"""/*
+ * FontsAPI CDN v2.1.4
+ * {FLAGS["css"]}
+ *
+ * Well done! You investigated an external CSS import.
+ * This is dangerous because:
+ * - External resources can be compromised (supply chain attack)
+ * - CSS can exfiltrate data via attribute selectors
+ * - @import bypasses CSP and SRI protections
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;600;700&display=swap");
+"""
+    return app.response_class(css_content, mimetype='text/css')
 
 
 if __name__ == "__main__":
